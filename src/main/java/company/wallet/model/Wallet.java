@@ -24,15 +24,19 @@ public class Wallet {
     @Column(precision = 19, scale = 4, nullable = false)
     private BigDecimal availableBalance = BigDecimal.ZERO;
 
-    @Column(precision = 19, scale = 4, nullable = false)
-    private BigDecimal lockedBalance = BigDecimal.ZERO;
-
     private String currency = "RUB";
 
-    private Instant lastTransactionAt;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
 
+    @Column(nullable = false)
+    private Instant updatedAt = Instant.now();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WalletStatus status = WalletStatus.ACTIVE;
 
-
-
+    @Version
+    @Column(nullable = false)
+    private Long version = 0L;
 }

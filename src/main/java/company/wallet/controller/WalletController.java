@@ -3,7 +3,7 @@ package company.wallet.controller;
 import company.wallet.api.ApiResponse;
 import company.wallet.request.WalletOperationRequest;
 import company.wallet.response.WalletBalanceResponse;
-import company.wallet.service.WalletService;
+import company.wallet.service.WalletOperationDispatcherImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,21 +17,21 @@ import java.util.UUID;
 @Slf4j
 public class WalletController {
 
-    private final WalletService walletService;
+    private final WalletOperationDispatcherImpl walletDispatcher;
 
     @PostMapping("/wallet")
     @ResponseStatus(HttpStatus.OK)
     public void request(@RequestBody WalletOperationRequest request) {
         log.debug("Request received. Type: {}, amount: {}, wallet_Id: {}", request.getOperationType(), request.getAmount(),
-                request.getWalletId());
-        walletService.executeOperation(request);
+                request.getValletId());
+        walletDispatcher.processOperation(request);
     }
 
     @PostMapping("/wallets/{WALLET_UUID}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<WalletBalanceResponse> getByWalletId(@PathVariable(name = "WALLET_UUID") UUID walletId) {
         log.debug("Balance requested. walletId: {}", walletId);
-        WalletBalanceResponse balance = walletService.getBalanceById(walletId);
+        WalletBalanceResponse balance = walletDispatcher.getBalanceById(walletId);
         log.debug("Successful balance return. Wallet_Id: {}", walletId);
         return ApiResponse.success(balance);
     }

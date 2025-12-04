@@ -5,9 +5,10 @@ import company.wallet.response.WalletBalanceResponse;
 
 import java.util.UUID;
 
-public interface WalletService {
+public interface WalletOperationDispatcher {
+
+    void processOperation(WalletOperationRequest request);
 
     WalletBalanceResponse getBalanceById(UUID walletId);
 
-    void executeOperation(WalletOperationRequest request);
 }
