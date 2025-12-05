@@ -11,19 +11,19 @@ import java.util.UUID;
 @Getter
 public class WalletException extends RuntimeException {
 
-    private final String errorCode;
+    private final int httpStatus;
     private final Map<String, Object> diagnostics;
 
-    protected WalletException(String message, String errorCode, Map<String, Object> diagnostics) {
+    protected WalletException(String message, int httpStatus, Map<String, Object> diagnostics) {
         super(message);
-        this.errorCode = errorCode;
+        this.httpStatus = httpStatus;
         this.diagnostics = diagnostics;
     }
 
     public static WalletException walletNotFound(UUID walletId) {
         return new WalletException(
                 "Wallet not found: " + walletId,
-                "WALLET_NOT_FOUND",
+                404,
                 Map.of(
                         "walletId", walletId,
                         "timestamp", Instant.now()
@@ -35,7 +35,7 @@ public class WalletException extends RuntimeException {
         return new WalletException(
                 String.format("Wallet is %s. Cannot process %s",
                         currentStatus.name().toLowerCase(), operation.toLowerCase()),
-                "WALLET_NOT_ACTIVE",
+                403,
                 Map.of(
                         "walletId", walletId,
                         "operation", operation,
@@ -53,7 +53,7 @@ public class WalletException extends RuntimeException {
         return new WalletException(
                 String.format("Deposit would exceed maximum balance by %s",
                         newBalance.subtract(maxBalance)),
-                "MAX_BALANCE_EXCEEDED",
+                403,
                 Map.of(
                         "walletId", walletId,
                         "operation", "DEPOSIT",
@@ -73,7 +73,7 @@ public class WalletException extends RuntimeException {
         return new WalletException(
                 String.format("Insufficient available funds. Available: %s, Requested: %s",
                         availableBalance, requestedAmount),
-                "INSUFFICIENT_FUNDS",
+                403,
                 Map.of(
                         "walletId", walletId,
                         "operation", "WITHDRAW",
@@ -89,7 +89,7 @@ public class WalletException extends RuntimeException {
     public static WalletException depositFailed(UUID walletId, BigDecimal amount, BigDecimal currentBalance) {
         return new WalletException(
                 "Deposit operation failed",
-                "DEPOSIT_FAILED",
+                403,
                 Map.of(
                         "walletId", walletId,
                         "operation", "DEPOSIT",
@@ -103,7 +103,7 @@ public class WalletException extends RuntimeException {
     public static WalletException withdrawalFailed(UUID walletId, BigDecimal amount, BigDecimal currentBalance) {
         return new WalletException(
                 "Withdrawal operation failed",
-                "WITHDRAWAL_FAILED",
+                403,
                 Map.of(
                         "walletId", walletId,
                         "operation", "WITHDRAW",

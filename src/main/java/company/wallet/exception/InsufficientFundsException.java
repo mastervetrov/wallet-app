@@ -4,6 +4,6 @@ import java.util.Map;
 
 class InsufficientFundsException extends WalletException {
     public InsufficientFundsException(String message, Map<String, Object> diagnostics) {
-        super(message, "INSUFFICIENT_FUNDS", diagnostics);
+        super(message, 403, diagnostics);
     }
 }

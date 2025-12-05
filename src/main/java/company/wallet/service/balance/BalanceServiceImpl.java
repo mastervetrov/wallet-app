@@ -22,7 +22,7 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public WalletBalanceResponse getBalanceById(UUID walletId) {
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(() ->
-            WalletException.walletNotFound(walletId));
+                WalletException.walletNotFound(walletId));
 
         return toWalletBalanceResponse(wallet);
     }

@@ -4,6 +4,7 @@ import company.wallet.api.ApiResponse;
 import company.wallet.request.WalletOperationRequest;
 import company.wallet.response.WalletBalanceResponse;
 import company.wallet.service.WalletOperationDispatcherImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,13 @@ public class WalletController {
 
     @PostMapping("/wallet")
     @ResponseStatus(HttpStatus.OK)
-    public void request(@RequestBody WalletOperationRequest request) {
+    public void request(@Valid @RequestBody WalletOperationRequest request) {
         log.debug("Request received. Type: {}, amount: {}, wallet_Id: {}", request.getOperationType(), request.getAmount(),
                 request.getValletId());
         walletDispatcher.processOperation(request);
     }
 
-    @PostMapping("/wallets/{WALLET_UUID}")
+    @GetMapping("/wallets/{WALLET_UUID}")
     @ResponseStatus(HttpStatus.OK)
     public ApiResponse<WalletBalanceResponse> getByWalletId(@PathVariable(name = "WALLET_UUID") UUID walletId) {
         log.debug("Balance requested. walletId: {}", walletId);

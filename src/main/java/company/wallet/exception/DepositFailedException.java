@@ -4,6 +4,6 @@ import java.util.Map;
 
 class DepositFailedException extends WalletException {
     public DepositFailedException(String message, Map<String, Object> diagnostics) {
-        super(message, "DEPOSIT_FAILED", diagnostics);
+        super(message, 403, diagnostics);
     }
 }

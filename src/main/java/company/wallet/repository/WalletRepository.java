@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
+    @Transactional
     @Modifying
     @Query("""
             UPDATE Wallet w
@@ -30,6 +32,7 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
                        @Param("amount") BigDecimal amount,
                        @Param("maxBalance") BigDecimal maxBalance);
 
+    @Transactional
     @Modifying
     @Query("""
             UPDATE Wallet w

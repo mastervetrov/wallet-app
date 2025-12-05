@@ -1,7 +1,7 @@
 package company.wallet.api;
 
+import company.wallet.api.dto.ErrorResponse;
 import company.wallet.api.dto.Metadata;
-import org.springframework.web.ErrorResponse;
 
 /**
  * Universal response API
@@ -32,4 +32,5 @@ public record ApiResponse<T>(
                 Metadata.create()
         );
     }
+
 }
