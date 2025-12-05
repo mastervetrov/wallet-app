@@ -1,0 +1,30 @@
+services:
+  wallet:
+    container_name: wallet
+    ports:
+      - "8080:8080"
+    image: rumyancevivan/wallet:latest
+    environment:
+      # === Spring Profile ===
+      - SPRING_PROFILES_ACTIVE=dev
+      # === Postgres ===
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres..:5432/wallet_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      # === Liquibase ===
+      - SPRING_LIQUIBASE_CHANGE_LOG=classpath:db/changelog/changelog-master.yaml
+  postgres:
+    container_name: postgres-wallet
+    ports:
+      - "5432:5432"
+    image: postgres:17.5
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wallet_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

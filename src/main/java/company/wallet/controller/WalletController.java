@@ -36,7 +36,4 @@ public class WalletController {
         return ApiResponse.success(balance);
     }
 
-
-
-
 }

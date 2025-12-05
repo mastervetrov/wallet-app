@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 2025/12/05-12-create-wallet.yaml
+      relativeToChangelogFile: true
