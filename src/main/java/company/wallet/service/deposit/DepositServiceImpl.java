@@ -16,7 +16,7 @@ public class DepositServiceImpl implements DepositService{
     private final DiagnosticService diagnosticService;
 
     @Override
-    public void deposit(UUID walletId, BigDecimal amount) {
+    public void deposit(UUID walletId, UUID userId, BigDecimal amount) {
         int processedRows = walletRepository.depositAtomic(walletId, amount, new BigDecimal("9999999999999.9999"));
         if (processedRows == 0) diagnosticService.handleFailedDeposit(walletId, amount);
     }

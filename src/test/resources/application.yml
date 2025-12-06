@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: wallet
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog-master.yaml
+server:
+  port: 8080
+
+logging:
+  level:
+    company.wallet: INFO

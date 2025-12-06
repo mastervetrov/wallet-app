@@ -4,7 +4,6 @@ import company.wallet.exception.WalletException;
 import company.wallet.model.Wallet;
 import company.wallet.repository.WalletRepository;
 import company.wallet.response.WalletBalanceResponse;
-import company.wallet.service.diagnostic.DiagnosticService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +27,11 @@ public class BalanceServiceImpl implements BalanceService {
 
     private WalletBalanceResponse toWalletBalanceResponse(Wallet wallet) {
         WalletBalanceResponse response = new WalletBalanceResponse();
-        response.setBalance(wallet.getBalance());
         response.setWalletId(wallet.getId());
+        response.setUserId(wallet.getUserId());
+        response.setBalance(wallet.getBalance());
         response.setAvailableBalance(wallet.getAvailableBalance());
-        response.setCurrency(wallet.getCurrency());
+        response.setCurrency(wallet.getCurrency().name());
         response.setLastUpdated(wallet.getUpdatedAt());
         return response;
     }

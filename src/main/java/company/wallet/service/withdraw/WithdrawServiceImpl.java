@@ -16,7 +16,7 @@ public class WithdrawServiceImpl implements WithdrawService{
     private final DiagnosticService diagnosticService;
 
     @Override
-    public void withdraw(UUID walletId, BigDecimal amount) {
+    public void withdraw(UUID walletId, UUID userId, BigDecimal amount) {
         int processedRows = walletRepository.withdrawAtomic(walletId, amount, BigDecimal.ZERO);
         if (processedRows == 0) {
             diagnosticService.handleFailedWithdraw(walletId, amount);

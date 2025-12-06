@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public interface WalletOperationDispatcher {
 
-    void processOperation(WalletOperationRequest request);
+    void processOperation(WalletOperationRequest request, UUID userId);
 
-    WalletBalanceResponse getBalanceById(UUID walletId);
+    WalletBalanceResponse getBalanceById(UUID walletId, UUID userId);
 
 }

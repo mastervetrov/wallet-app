@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface WithdrawService {
 
-    void withdraw(UUID walletId, BigDecimal amount);
+    void withdraw(UUID walletId, UUID userId, BigDecimal amount);
 
 }

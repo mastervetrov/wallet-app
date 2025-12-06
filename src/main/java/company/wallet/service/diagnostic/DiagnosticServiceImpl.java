@@ -17,7 +17,7 @@ import java.util.UUID;
 public class DiagnosticServiceImpl implements DiagnosticService {
 
     private final WalletRepository walletRepository;
-    private static final BigDecimal MAX_BALANCE = new BigDecimal("1000000.00");
+    private static final BigDecimal MAX_BALANCE = new BigDecimal("9999999999999.9999");
 
     @Override
     public void handleFailedDeposit(UUID walletId, BigDecimal amount) {

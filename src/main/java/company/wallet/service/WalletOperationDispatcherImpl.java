@@ -19,15 +19,15 @@ public class WalletOperationDispatcherImpl implements WalletOperationDispatcher{
     private final BalanceService balanceService;
 
     @Override
-    public void processOperation(WalletOperationRequest request) {
+    public void processOperation(WalletOperationRequest request, UUID userId) {
         switch (request.getOperationType()) {
-            case DEPOSIT -> depositService.deposit(request.getValletId(), request.getAmount());
-            case WITHDRAW -> withdrawService.withdraw(request.getValletId(), request.getAmount());
+            case DEPOSIT -> depositService.deposit(request.getValletId(), userId, request.getAmount());
+            case WITHDRAW -> withdrawService.withdraw(request.getValletId(), userId, request.getAmount());
         }
     }
 
     @Override
-    public WalletBalanceResponse getBalanceById(UUID walletId) {
+    public WalletBalanceResponse getBalanceById(UUID walletId, UUID userId) {
         return balanceService.getBalanceById(walletId);
     }
 }

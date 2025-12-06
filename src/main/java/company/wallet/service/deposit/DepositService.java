@@ -5,5 +5,5 @@ import java.util.UUID;
 
 public interface DepositService {
 
-    void deposit(UUID walletId, BigDecimal amount);
+    void deposit(UUID walletId, UUID userId, BigDecimal amount);
 }

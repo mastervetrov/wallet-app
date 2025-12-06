@@ -13,6 +13,8 @@ public class WalletBalanceResponse {
 
     private UUID walletId;
 
+    private UUID userId;
+
     private BigDecimal balance;
 
     private String currency;

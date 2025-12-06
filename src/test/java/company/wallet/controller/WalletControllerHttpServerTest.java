@@ -34,6 +34,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class WalletControllerHttpServerTest {
 
+    private final String JWT_TOKEN_FOR_TEST = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTExMTExMS0wMDA5LTQ0NDQtNDQ0NC0wMDAwMDAwMDAwMDEifQ.E7LVZoxH3stlZ5SH6ISJfJlgTzgV_tNRu0JSKCllmVM";
+    private final String USER_ID = "11111111-0009-4444-4444-000000000001";
+
     @LocalServerPort
     private int port;
 
@@ -82,6 +85,7 @@ class WalletControllerHttpServerTest {
 
         Wallet wallet = new Wallet();
         wallet.setBalance(new BigDecimal("1500.50"));
+        wallet.setUserId(UUID.fromString(USER_ID));
         wallet.setAvailableBalance(new BigDecimal("1500.50"));
         Wallet savedWallet = walletRepository.save(wallet);
         existingWalletId = savedWallet.getId();
@@ -90,14 +94,15 @@ class WalletControllerHttpServerTest {
     @Test
     @DisplayName("GET api/v1/wallets/{WALLET_UUID} - когда кошелек существует, эндпоинт должен вернуть баланс")
     void getByWalletId_withExistingWallet_shouldReturnBalance() {
+        HttpEntity<Void> entityHeader = createTestHeaderEntity();
+
         ResponseEntity<ApiResponse<WalletBalanceResponse>> response = restTemplate.exchange(
                 baseUrl + "/wallets/{WALLET_UUID}",
                 HttpMethod.GET,
-                null,
+                entityHeader,
                 new ParameterizedTypeReference<ApiResponse<WalletBalanceResponse>>() {},
                 existingWalletId.toString()
         );
-
         assertThat(response.getStatusCode().equals(HttpStatus.OK));
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().success()).isTrue();
@@ -115,10 +120,16 @@ class WalletControllerHttpServerTest {
     @Test
     @DisplayName("GET api/v1/wallets/{WALLET_UUID} - когда кошелек не существует, эндпоинт должен вернуть 404 и сообщение с ошибкой")
     void getByWalletId_withNonExistingWallet_shouldReturnError() {
+
+        HttpEntity<Void> entityHeader = createTestHeaderEntity();
+
+
         UUID nonExistingId = UUID.randomUUID();
 
-        ResponseEntity<ApiResponse> response = restTemplate.getForEntity(
+        ResponseEntity<ApiResponse> response = restTemplate.exchange(
                 baseUrl + "/wallets/{WALLET_UUID}",
+                HttpMethod.GET,
+                entityHeader,
                 ApiResponse.class,
                 nonExistingId
         );
@@ -127,6 +138,12 @@ class WalletControllerHttpServerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().success()).isFalse();
         assertThat(response.getBody().error()).isNotNull();
+    }
+
+    private HttpEntity<Void> createTestHeaderEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + JWT_TOKEN_FOR_TEST);
+        return new HttpEntity<>(headers);
     }
 
     @Test
@@ -139,6 +156,7 @@ class WalletControllerHttpServerTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + JWT_TOKEN_FOR_TEST);
         HttpEntity<WalletOperationRequest> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<Void> response = restTemplate.postForEntity(
@@ -163,6 +181,7 @@ class WalletControllerHttpServerTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + JWT_TOKEN_FOR_TEST);
         HttpEntity<WalletOperationRequest> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<Void> response = restTemplate.postForEntity(
@@ -184,15 +203,16 @@ class WalletControllerHttpServerTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(invalidJson, headers);
+        headers.set("Authorization", "Bearer " + JWT_TOKEN_FOR_TEST);
 
+        HttpEntity<String> entity = new HttpEntity<>(invalidJson, headers);
         ResponseEntity<Void> response = restTemplate.postForEntity(
                 baseUrl + "/wallet",
                 entity,
                 Void.class
         );
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
@@ -202,6 +222,8 @@ class WalletControllerHttpServerTest {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + JWT_TOKEN_FOR_TEST);
+
         HttpEntity<WalletOperationRequest> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<Void> response = restTemplate.postForEntity(

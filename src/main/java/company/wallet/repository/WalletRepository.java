@@ -44,7 +44,7 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
             AND w.availableBalance >= :amount
             """)
     int withdrawAtomic(@Param("id") UUID id,
-                               @Param("amount") BigDecimal amount,
-                               @Param("minBalanceAfterWithdrawal") BigDecimal minBalanceAfterWithdrawal);
+                       @Param("amount") BigDecimal amount,
+                       @Param("minBalanceAfterWithdrawal") BigDecimal minBalanceAfterWithdrawal);
 
 }
