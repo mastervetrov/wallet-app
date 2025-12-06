@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: 2025/12/05-12-create-wallet.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: sql/one-wallet-for-jmeter.sql
+      relativeToChangelogFile: true

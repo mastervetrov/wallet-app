@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 05-12-create-wallet
+      author: Ivan Rumyancev
+      changes:
+        - createTable:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: NUMERIC(19,4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: available_balance
+                  type: NUMERIC(19,4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  defaultValue: "RUB"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  defaultValue: "ACTIVE"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: BIGINT
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+
+        - addDefaultValue:
+            tableName: wallets
+            columnName: balance
+            defaultValueNumeric: 0
+
+        - addDefaultValue:
+            tableName: wallets
+            columnName: available_balance
+            defaultValueNumeric: 0
+
+        - createIndex:
+            tableName: wallets
+            indexName: idx_wallets_status
+            columns:
+              - column:
+                  name: status
+
+        - createIndex:
+            tableName: wallets
+            indexName: idx_wallets_created_at
+            columns:
+              - column:
+                  name: created_at
