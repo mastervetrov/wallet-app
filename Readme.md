@@ -6,8 +6,8 @@
 #### 3) снять средства с кошелька
 
 ## **<br><br>🔛 Запуск**
-#### скачай docker-compose-prod.yaml
-#### введи команду docker compose -f docker-compose-prod.yaml up
+#### скачай [docker-compose-prod.yaml](https://github.com/mastervetrov/wallet-app/blob/production/docker-compose-prod.yaml)
+#### введи команду docker compose -f docker-compose-prod.yaml up, образ загрузится через dockerhub
 
 ## **<br><br>🛠 Использованные технологии**
 ### Java 17
@@ -50,6 +50,7 @@
 # **<br><br>🐞 Bugs и особенности**:
 Пользователь имеет право изменить кошелек другого пользователя
 Валидацию проходит любой JWT токен, содержащий любой UUID в 'sub' payload.
+
 
 
 
