@@ -22,7 +22,7 @@
 
 ## **<br><br>🔗 Эндпоинты**
 ### 1) GET /api/v1/wallets/{WALLET_ID} - получить баланс
-### response: ![img.png](img.png)
+### response: <img width="497" height="363" alt="img" src="https://github.com/user-attachments/assets/8362b0f4-c0e2-4964-9b88-079ebeabe8bc" />
 ### statusCode: 200 OK
 ### 2) POST /api/v1/wallet - выполнить транзакцию (Deposit/Withdraw)
 ### request: ![img_2.png](img_2.png)
@@ -50,5 +50,6 @@
 # **<br><br>🐞 Bugs и особенности**:
 Пользователь имеет право изменить кошелек другого пользователя
 Валидацию проходит любой JWT токен, содержащий любой UUID в 'sub' payload.
+
 
 
